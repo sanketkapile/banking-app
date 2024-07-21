@@ -1,9 +1,11 @@
 package com.sanket.banking.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,5 +47,26 @@ public class AccountController {
 		AccountDto accountDto = accountService.deposit(id, amount);
 		return ResponseEntity.ok(accountDto);
 	}
+	
+	//Withdraw REST API
+	@PutMapping("/{id}/withdraw")
+	public ResponseEntity<AccountDto> withdraw(@PathVariable Long id,@RequestBody Map<String, Double> request){
+		Double amount = request.get("amount");
+		AccountDto accountDto = accountService.withdraw(id, amount);
+		return ResponseEntity.ok(accountDto);
+	}
 
+	//Display all account details REST API
+	@PostMapping
+	public ResponseEntity<List<AccountDto>> getAllAccounts(){
+		List<AccountDto> allAccounts = accountService.getAllAccounts();
+		return ResponseEntity.ok(allAccounts);
+	}
+	
+	//Delete Account REST API
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> deleteAccount(@PathVariable Long id){
+		accountService.deleteAccount(id);
+		return ResponseEntity.ok("Account Deleted Successfully");
+	}
 }
